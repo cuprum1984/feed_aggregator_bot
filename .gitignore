@@ -22,5 +22,7 @@ Thumbs.db
 
 # Database
 pg_data/
+
 # prompt
-prompt.md
+prompt
+
