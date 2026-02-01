@@ -1,0 +1,14 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# Установим системные зависимости (для psycopg2/asyncpg, lxml и т.п., если понадобятся)
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Код монтируем volume'ом, так что COPY остального не обязателен для dev
+CMD ["python", "-m", "bot.main"]

@@ -1,0 +1,24 @@
+# Docker
+build/
+*.log
+
+# Environment variables
+.env
+*.env
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+pg_data/

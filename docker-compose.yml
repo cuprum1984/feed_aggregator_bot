@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: fa_postgres
+    environment:
+      POSTGRES_DB: feed_aggregator
+      POSTGRES_USER: fa_user
+      POSTGRES_PASSWORD: fa_password
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile.bot
+    container_name: fa_bot
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: python -m bot.main
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: fa_api
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: uvicorn core.api:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+
+volumes:
+  pg_data:
